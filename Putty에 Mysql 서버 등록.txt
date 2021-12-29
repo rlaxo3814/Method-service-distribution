@@ -1,0 +1,149 @@
+https://www.ncloud.com
+회원가입 및 로그인 하기
+
+Putty
+네이버 클라우드 비밀번호 알아야 합니다.
+공인 IP:  본인의 공인 IP
+비밀번호:  본인의 비밀번호
+Putty 접속할때 서버 접속용 IP로 접속
+서버 접속용 공인 IP :  본인의 서버 접속용 공인 IP
+외부 포트 :  본인이 설정한 외부포트 입력
+
+login as: root
+Password: ctrl+c눌러서 마우스 우클릭 안되면 ctrl+우클릭 paste 누르기 엔터
+
+
+Mysql
+환경설정
+
+service mysql status 엔터치고 (active running 확인)
+ctrl+c 하면 빠져나옴
+
+
+Mysql한글설정
+*(가로안은 명령문에 대한 설명임(입력 금지))
+*띄워쓰기 준수 할 것
+
+cd /etc/mysql/
+ls (리스트 라는 뜻)
+cat my.cnf (my.cnf 조회하는 것임)
+vi my.cnf (my.cnf 수정하러 들어가는 것임)
+쭉 내려와서 마지막행으로 이동 log 뒤에서 i누른다.(밑에 --insert mode-- 확인)
+엔터치고 밑에라인에 밑에 내용 추가(#은 주석처리 하는 것임)
+밑에라인 ctrl+c 누르고 Putty에서 넣을 부분  
+#default-time-zone=Asia/Seoul
+[client]
+default-character-set=utf8
+[mysql]
+default-character-set=utf8
+[mysqld]
+collation-server=utf8_unicode_ci
+init-connect='SET NAMES utf8'
+character-set-server = utf8
+
+다 입력한 후 
+esc(insert 모드 빠져나오기)
+:wq(저장하기 기능)
+cat my.cnf
+service mysql stop
+service mysql status
+ctrl+c(빠져나오기)
+service mysql start(activating 되있으면 성공 한것임)// service mysql restart(이 명령어는 stop과 start를 동시에 하는 것임)
+
+끝내고 다시 로그인
+login as: root
+Password: ctrl+c눌러서 마우스 우클릭 안되면 ctrl+우클릭 paste 누르기 엔터
+mysql -uroot
+alter user 'root'@'localhost' identified by '본인이 정할 비번입력 '; (비밀번호 정하는 것임(1234))
+create user '본인이 정할 아이디 입력'@'%' identified by '본인이 정할 비번입력'; (아이디 정하는 것임)
+grant all privileges on *.* to 'Got'@'%'; (권한 부여 하는 것임)
+
+
+
+
+다시로그인
+login as: root
+Password: ctrl+c눌러서 마우스 우클릭 안되면 ctrl+우클릭 paste 누르기 엔터
+cd etc/mysql/mysql.conf.d/
+ls
+vi mysqld.cnf
+i(누르고)
+쭉 내려오면 bind address 부분 #처리(주석처리)
+esc(누르고)
+:wq
+service mysql restart
+
+workBench 켜기
++모양 클릭
+connection name: 기존 Putty 접속할때 서버 이름 적기
+Hostname: 공인IP입력
+Username: 위에서 입력한 본인의 ID 입력
+테스트 커넥션 클릭하면 비번 입력하고 성공했다고 뜸
+그다음 다시 ok버튼 누르면 접속이 됨
+
+mysql_mc, timezone_leaps 파일 workbench에 두개다 띄워놓기
+mysql_mc파일에서 
+기존에 있던 테이블을 memberTbl 지우고
+CREATE TABLE memberTBL (
+    id VARCHAR(20) PRIMARY KEY,
+    pwd VARCHAR(20) NOT NULL,
+    name VARCHAR(20) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+    proImg VARCHAR(100) NULL,
+    proContents VARCHAR(2000) NULL
+)  DEFAULT CHARACTER SET UTF8 COLLATE UTF8_GENERAL_CI;
+추가
+mysql_mc 파일에서 언어설정 확인  25번줄 맨뒤에다 커서 놓고  번개1표시 클릭
+mysql_mc 파일에서 27번줄 맨뒤에다 커서 놓고  번개1표시 클릭
+mysql_mc 파일에서 32번줄 맨뒤에다 커서 놓고  번개1표시 클릭
+
+timezone_leaps 파일 첫번째 줄
+ use mysql; 추가하고 번개 표시 클릭 하고 기다리기
+-> 완료되면 mysql_mc 파일 에서 체크
+mysql_mc 파일에서 27번줄 맨뒤에다 커서 놓고  번개1표시 클릭
+mysql_mc 파일에서 32번줄 맨뒤에다 커서 놓고  번개1표시 클릭
+
+
+다시 Putty로 와서 로그인
+login as: root
+Password: ctrl+c눌러서 마우스 우클릭 안되면 ctrl+우클릭 paste 누르기 엔터
+cd /etc/mysql
+ls
+vi my.cnf
+#default-time-zone=Asia/Seoul 여기 #(주석처리 해제)제거
+# 자리에 커서 옮겨놓고 X누르면 삭제됨
+esc(누르고)
+:wq
+service mysql restart
+
+workBench 켜기
+본인의 입력한 아이디로 다시 접속
+mysql_mc 파일에서 32번줄 맨뒤에다 커서 놓고  번개1표시 클릭
+create database 본인의 프로젝트 테이블 입력;
+use 본인의 프로젝트 테이블 입력; 
+추가해서 테스트 체크하기
+본인의 프로젝트 테이블 만들어서 테스트
+이클립스 켜서 
+-> pom.xml  파일에 디펜던시 추가
+pom.xml
+<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>5.1.7</version>
+</dependency>
+
+ 이클립스 본인의 서버에 올릴 프로젝트
+-> jdbc.properties 수정
+<Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxIdle="4" maxTotal="8" name="jdbc/member" password="본인의 비번" type="javax.sql.DataSource" url="jdbc:mysql://본인의 공인IP:3306/본인의 프로젝트 이름?useSSL=false&amp;CharacterEncoding=UTF-8&amp;useUnicode=true" username="본인의 위에 입력한 Mysql 아이디 입력"/>
+여러분의 공인IP로 바꾸어야 합니다.
+아이디와 패스워드도 똑같습니다.
+밑에 처럼 입력하면 됩니다.
+
+jdbc.driverClassName=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://본인의 공인IP:3306/본인프로젝트 이름?useSSL=false&amp;CharacterEncoding=UTF-8&amp;useUnicode=true
+jdbc.username=본인의 Mysql 아이디
+jdbc.password=본인의 Mysql 비번
+
+다 수정한 다음
+Putty restart 하고 접속해보기 구글에서 접속해 회원가입 해보기
