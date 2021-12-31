@@ -1,0 +1,69 @@
+putty 접속
+
+HostName: 본인의 서버 접속용 IP
+Port: 본인의 외부포트
+Saved Sessions: 본인이 등록한 네이버클라우드 플랫폼 서버 이름(처음 생성하는 거면 Save 누르고 두번째면 해당서버 누르고 Load 클릭)
+open클릭
+
+login as: root
+Password: ctrl+c눌러서 Putty에서 초록색 깜빡이는 부분 마우스 우클릭(복사하면 아무것도 안보이고 초록색으로 만 가득찬다) 안되면 ctrl+우클릭 paste 누르기 엔터
+
+cd /opt/tomcat/apache-tomcat-9.0.56/webapps/manager/META-INF
+ls
+vi context.xml
+하단의 <Valve~/> 2줄 모두 주석 처리 후 저장
+ i누르면 Insert Mode로 전환
+<Valve~/>윗부분에서 엔터쳐서 주석 처리 공간 만들고
+<!--
+-->
+주석 추가
+esc후 
+:wq
+cd ..
+cd ..
+cd ..
+cd conf
+ls
+vi tomcat-users.xml
+하단의 <!-- <role>들어있는 부분 --> 수정(주석을 풀어준다) <!--여기다 커서 가져다 놓고 dd 누른다.
+user username 부분 두줄 주석처리 한다.
+두번째 줄 role이라 적힌 부분 앞에 yy 누른다
+p 를 누르면 복사가 된다.(밑에줄로 복사된다)
+<role rolename="tomcat"/> t자리에 커서 갖다놓고 x를 눌러서 삭제 하면 <role rolename=""/>처럼 되고 여기서 i 누른다 manager-gui 삽입 다음 esc 누른다 
+두번째 <role rolename="role1"/> r자리에 커서 갖다놓고 x를 눌러서 삭제 하면 <role rolename=""/>처럼 되고 여기서 i 누른다 manager-script 삽입 다음 esc 누른다
+세번째 <role rolename="role1"/> r자리에 커서 갖다놓고 x를 눌러서 삭제 하면 <role rolename=""/>처럼 되고 여기서 i 누른다 manager-status 삽입 다음 esc 누른다
+네번째 <user username="tomcat" password="<must-be-changed>" roles="tomcat"/> tomcat t자리에 커서 갖다놓고  i 누른다 Tomcat 관리자 서버이름 입력 후 esc누른다 password부분 가서 x누르고 기존 있는 내용 삭제 i 누르고 Tomcat관리자 비번 입력 후 esc누른다 
+roles 부분 가서 x누르고 기존 있는 내용 삭제 i 누르고 manager-gui, manager-script, manager-status 입력 후 
+esc 누른다
+:wq
+
+밑에 부분처럼 되면된다.(Tomcat 관리자 서버이름과 관리자 비번은 본인이 마음대로 정하면 된다)
+=	<role rolename="manager-gui"/>
+	<role rolename="manager-script"/>
+	<role rolename="manager-status"/>
+	<user username="Tomcat 관리자 서버이름" password="Tomcat관리자 비번" roles="manager-gui, manager-script, manager-status"/>
+	<!--
+		<user username="both" password="<must-be-changed>" 				roles="tomcat,role1"/>
+		<user username="role1" password="<must-be-changed>" 				roles="role1"/>
+	-->
+cd ..
+cd bin
+./shutdown.sh
+./startup.sh
+
+ 
+ http://본인의 공인 IP/manager/html 로 접속
+ 사용자 이름과 비번 입력하라는 메시지뜸
+
+ 본인의 서버이름 / 본인의 비밀번호로 로그인
+
+ 2번째 카테고리에 원래 배치한 것 제거할때 오른쪽에 배치된 것을 제거 버튼 누른다(지금 버전이 맞다면 안 지워도 됨)-> 서버에 올라가져 있는 해당 웹 삭제
+ 시작 및 중지도 컨트롤 가능
+
+그리고 밑에보면 삭제하고 난 다음 새로운 버전 올리려면 배치 카테고리에 배치할 War 파일 파일선택 누르고 War 파일 집어넣고 배치 누르면 올라간다.
+
+파일질라 로 가서  리모트 사이트 입력하고 webapps폴더 보면 삭제한것 있는지 없는지 확인
+
+마지막으로 구글 http://본인의 공인 IP/:8080/ 본인의 프로젝트 이름 접속해서 잘 되는지 확인
+
+끝
