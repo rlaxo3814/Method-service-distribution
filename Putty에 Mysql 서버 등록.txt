@@ -9,8 +9,13 @@ Putty 접속할때 서버 접속용 IP로 접속
 서버 접속용 공인 IP :  본인의 서버 접속용 공인 IP
 외부 포트 :  본인이 설정한 외부포트 입력
 
+HostName: 본인의 서버 접속용 IP
+Port: 본인의 외부포트
+Saved Sessions: 본인이 등록한 네이버클라우드 플랫폼 서버 이름(처음 생성하는 거면 Save 누르고 두번째면 해당서버 누르고 Load 클릭)
+open클릭
+
 login as: root
-Password: ctrl+c눌러서 마우스 우클릭 안되면 ctrl+우클릭 paste 누르기 엔터
+Password: ctrl+c눌러서 Putty에서 초록색 깜빡이는 부분 마우스 우클릭(복사하면 아무것도 안보이고 초록색으로 만 가득찬다) 안되면 ctrl+우클릭 paste 누르기 엔터
 
 
 Mysql
@@ -22,7 +27,7 @@ ctrl+c 하면 빠져나옴
 
 Mysql한글설정
 *(가로안은 명령문에 대한 설명임(입력 금지))
-*띄워쓰기 준수 할 것
+*띄워쓰기 준수 할 것 , 오타 체크 할 것 
 
 cd /etc/mysql/
 ls (리스트 라는 뜻)
@@ -49,21 +54,31 @@ service mysql stop
 service mysql status
 ctrl+c(빠져나오기)
 service mysql start(activating 되있으면 성공 한것임)// service mysql restart(이 명령어는 stop과 start를 동시에 하는 것임)
-
+exit
 끝내고 다시 로그인
+HostName: 본인의 서버 접속용 IP
+Port: 본인의 외부포트
+Saved Sessions: 본인이 등록한 네이버클라우드 플랫폼 서버 이름(처음 생성하는 거면 Save 누르고 두번째면 해당서버 누르고 Load 클릭)
+open클릭
+
 login as: root
-Password: ctrl+c눌러서 마우스 우클릭 안되면 ctrl+우클릭 paste 누르기 엔터
+Password: ctrl+c눌러서 Putty에서 초록색 깜빡이는 부분 마우스 우클릭(복사하면 아무것도 안보이고 초록색으로 만 가득찬다) 안되면 ctrl+우클릭 paste 누르기 엔터
 mysql -uroot
-alter user 'root'@'localhost' identified by '본인이 정할 비번입력 '; (비밀번호 정하는 것임(1234))
+alter user 'root'@'localhost' identified by '본인이 정할 비번입력 '; (비밀번호 정하는 것임(ex)1234))
 create user '본인이 정할 아이디 입력'@'%' identified by '본인이 정할 비번입력'; (아이디 정하는 것임)
 grant all privileges on *.* to 'Got'@'%'; (권한 부여 하는 것임)
-
+exit
 
 
 
 다시로그인
+HostName: 본인의 서버 접속용 IP
+Port: 본인의 외부포트
+Saved Sessions: 본인이 등록한 네이버클라우드 플랫폼 서버 이름(처음 생성하는 거면 Save 누르고 두번째면 해당서버 누르고 Load 클릭)
+open클릭
+
 login as: root
-Password: ctrl+c눌러서 마우스 우클릭 안되면 ctrl+우클릭 paste 누르기 엔터
+Password: ctrl+c눌러서 Putty에서 초록색 깜빡이는 부분 마우스 우클릭(복사하면 아무것도 안보이고 초록색으로 만 가득찬다) 안되면 ctrl+우클릭 paste 누르기 엔터
 cd etc/mysql/mysql.conf.d/
 ls
 vi mysqld.cnf
@@ -72,6 +87,7 @@ i(누르고)
 esc(누르고)
 :wq
 service mysql restart
+exit
 
 workBench 켜기
 +모양 클릭
@@ -98,15 +114,20 @@ mysql_mc 파일에서 27번줄 맨뒤에다 커서 놓고  번개1표시 클릭
 mysql_mc 파일에서 32번줄 맨뒤에다 커서 놓고  번개1표시 클릭
 
 timezone_leaps 파일 첫번째 줄
- use mysql; 추가하고 번개 표시 클릭 하고 기다리기
--> 완료되면 mysql_mc 파일 에서 체크
+ use mysql; 추가하고 그냥 번개 표시 클릭 하고 기다리기
+-> 완료되면 mysql_mc 파일 에서 체크(밑에줄)
 mysql_mc 파일에서 27번줄 맨뒤에다 커서 놓고  번개1표시 클릭
 mysql_mc 파일에서 32번줄 맨뒤에다 커서 놓고  번개1표시 클릭
 
 
 다시 Putty로 와서 로그인
+HostName: 본인의 서버 접속용 IP
+Port: 본인의 외부포트
+Saved Sessions: 본인이 등록한 네이버클라우드 플랫폼 서버 이름(처음 생성하는 거면 Save 누르고 두번째면 해당서버 누르고 Load 클릭)
+open클릭
+
 login as: root
-Password: ctrl+c눌러서 마우스 우클릭 안되면 ctrl+우클릭 paste 누르기 엔터
+Password: ctrl+c눌러서 Putty에서 초록색 깜빡이는 부분 마우스 우클릭(복사하면 아무것도 안보이고 초록색으로 만 가득찬다) 안되면 ctrl+우클릭 paste 누르기 엔터
 cd /etc/mysql
 ls
 vi my.cnf
@@ -115,6 +136,7 @@ vi my.cnf
 esc(누르고)
 :wq
 service mysql restart
+exit
 
 workBench 켜기
 본인의 입력한 아이디로 다시 접속
@@ -124,7 +146,7 @@ use 본인의 프로젝트 테이블 입력;
 추가해서 테스트 체크하기
 본인의 프로젝트 테이블 만들어서 테스트
 이클립스 켜서 
--> pom.xml  파일에 디펜던시 추가
+-> 본인의 프로젝트에 pom.xml 파일에 디펜던시 추가
 pom.xml
 <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 <dependency>
