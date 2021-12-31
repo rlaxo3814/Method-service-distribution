@@ -1,0 +1,111 @@
+putty에서 로그인
+
+Putty
+네이버 클라우드 비밀번호 기억하기
+공인 IP와 서버 접속용 IP는 다르다는 것을 구분해야 한다. 
+공인 IP:  본인의 공인IP
+비밀번호:  본인의 공인 IP 비밀번호
+Putty 접속할때 서버 접속용 IP로 접속
+서버 접속용 공인 IP :  본인의 서버 접속용 IP
+외부 포트 :  본인의 외부포트
+
+HostName: 본인의 서버 접속용 IP
+Port: 본인의 외부포트
+Saved Sessions: 본인이 등록한 네이버클라우드 플랫폼 서버 이름(처음 생성하는 거면 Save 누르고 두번째면 해당서버 누르고 Load 클릭)
+open클릭
+
+login as: root
+Password: ctrl+c눌러서 Putty에서 초록색 깜빡이는 부분 마우스 우클릭(복사하면 아무것도 안보이고 초록색으로 만 가득찬다) 안되면 ctrl+우클릭 paste 누르기 엔터
+
+ java -version
+ apt update
+ apt upgrade
+-> 네이버 클라우드는 기본버전 sql을 제공하기 때문에 업데이트 필요
+ apt install openjdk-8-jdk
+-> 3~5번 설치중에 선택나올시 모두 엔터 혹은 y
+ cd /usr/lib/jvm 에서 ls
+-> 1.8.0 있는지 확인/
+ cd
+
+https://tomcat.apache.org/download-90.cgi 에서  Core - tar.gz 우클릭 하고 링크주소복사
+  https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.56/bin/apache-tomcat-9.0.56.tar.gz(복사된 링크, 오른쪽 단추누르면 추가됨)
+
+ wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.56/bin/apache-tomcat-9.0.56.tar.gz(옆에 있는 글자 전부 써주거나 복사해서 붙여넣는다)
+ 엔터
+
+ ls 쳐서 tar.gz 확인
+
+ 톰캣 설치할 디렉토리 폴더 만들기
+ mkdir /opt/tomcat
+ mv apache-tomcat-9.0.56.tar.gz /opt/tomcat
+ cd /opt/tomcat
+ ls
+ chmod 777 apache-tomcat-9.0.56.tar.gz
+ ls 
+ 쳐서 색깔 빨강->초록으로 변경 확인
+ tar xvf apache-tomcat-9.0.56.tar.gz
+ ls 
+ 쳐서 파란색으로 압축풀린 파일 생성 확인
+ cd apache-tomcat-9.0.56/
+ ls
+ cd bin
+ ls
+ ./startup.sh
+ 크롬에서 http://본인의 공인IP:8080/ 접속(각자 공인 IP)하면 톰캣 사이트 뜸
+-> 만약 ACG에 8080 규칙이 없으면 안뜸
+
+ https://filezilla-project.org/download.php?type=client 에서 FileZilla(첫라인) 다운로드
+ 다운받은거 설치 = 모두 디폴트로(나오는 대로 다음 누르면 됨)
+파일질라 켜서 왼쪽위에 File 누르고 site Manager 클릭
+ New Site클릭 하고 본인의 사이트 명 입력 
+ Protocol: SFTP 선택
+ Host: 서버접속용 IP(본인의 서버접속용 IP) 
+ Port: 포워딩한 포트(본인의 포워딩한 포트)
+ Logon Type: 본인이 로그인 할때 어떻게 해서 접속 할 것인지 고른다.
+ User: root입력
+ Password: 본인의 공인IP 비밀번호  -> Connect(연결) 누른다-> 비밀번호 입력하라고 나온다-> 본인의 공인IP 비밀번호(root에 개인 비밀번호입력) -> 확인
+ 오른쪽 중간 상단 Remote site(리모트 사이트)에  /opt/tomcat/apache-tomcat-9.0.56/conf 입력하면 디렉토리가 새로 보인다. 
+ apache-tomcat-9.0.56 폴더 클릭하고 밑에 conf 폴더 클릭 하면 밑에 하위 파일명에 context.xml 이 있음 
+ 거기에 공유받은 context.xml 파일 끌어다 덮어쓰기 (드래그) 확인 누르기
+ 그리고 이클립스 에서 Export-> War파일 생성 -> 적당한 위치에 War 파일 생성
+ 본인의 프로젝트 파일.war 파일 생성해서 파일질라 에서 Remote site에서 /opt/tomcat/apache-tomcat-9.0.56/conf 하위 폴더중 webapps 폴더클릭하고 하위 파일명에 폴더말고 빈공간 클릭하여 끌어다 집어넣기
+
+Putty 접속
+Putty
+네이버 클라우드 비밀번호 꼭 기억하기 
+공인 IP:  본인의 공인IP
+비밀번호:  본인의 공인 IP 비밀번호
+Putty 접속할때 서버 접속용 IP로 접속
+서버 접속용 공인 IP :  본인의 서버 접속용 IP
+외부 포트 :  본인이 정한 외부 포트
+
+ login as: root
+ Password: ctrl+c눌러서 마우스 우클릭 안되면 ctrl+우클릭 paste 누르기 엔터
+ cd /opt/tomcat/
+ cd apache-tomcat-9.0.56/
+ cd conf
+ ls
+ cd ..
+ cd webapps/
+ ls
+ cd ..
+ cd bin
+ ./shutdown.sh
+ ./startup.sh
+cd ..
+cd conf
+vi context.xml
+들어와서 저부분 저렇게 되있는지 본다(수정 또는 체크)
+<Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxIdle="4" maxTotal="8" name="jdbc/member" password="본인이 정한 Mysql 패스워드" type="javax.sql.DataSource" url="jdbc:mysql:/본인의 공인IP:3306/본인의 프로젝트 이름?useSSL=false&amp;CharacterEncoding=UTF-8&amp;useUnicode=true" username="본인의 MySQL 유저 이름"/>
+esc누르고
+:wq
+cd ..
+cd bin
+./shutdown.sh
+./startup.sh
+크롬에서 http://본인의 공인IP:8080/본인의 프로젝트 이름 (접속)
+/opt/tomcat/apache-tomcat-9.0.56/webapps 로 이동
+ putty로 해당 경로 들어가서 war 파일이 자동으로 압축이 풀려있는지 확인 (war 파일 이름이 뜨면 압축이 풀린것임 파란색으로)
+ 크롬에서 http://본인의 공인IP:8080/본인의 프로젝트 이름 (접속)
+-> url에 대소문자 구분 확실히 해야함
+ 뜨는거 확인
